@@ -6,7 +6,7 @@
 /*   By: qjosmyn <qjosmyn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 14:23:54 by qjosmyn           #+#    #+#             */
-/*   Updated: 2019/10/21 23:42:52 by qjosmyn          ###   ########.fr       */
+/*   Updated: 2019/10/22 00:41:48 by qjosmyn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int get_next_line(const int fd, char **line)
 {
-	static t_list *lines;
+	static k_list *lines;
 
 	lines = NULL;
 	if (fd < 0)
@@ -23,18 +23,28 @@ int get_next_line(const int fd, char **line)
 	return (gnl(fd, lines, line));
 }
 
-int gnl(int fd, t_list *fd_line, char **line)
+int gnl(int fd, k_list *fd_line, char **line)
 {
 	char **s;
 	int num;
 
-	if (*fd_line == NULL)
-		if ((*fd_line = ft_fdnew(fd) == NULL)
+	s = (char**)malloc(sizeof(char*));
+	*s = ft_strnew(0);
+	if (fd_line == NULL)
+	{
+		if ((fd_line = ft_fdnew(fd)) == NULL)
 			return (-1);
-	else if (*lines->file != fd)
-		gnl(fd, *fd_line->next, line);
-	if ((num = read_line(s, fd_line->file) == -1)
+	}
+	else if (fd_line->file != fd)
+		gnl(fd, fd_line->next, line);
+	if ((num = read_line(s, fd_line->file)) == -1)
 		return (1);
+	*line = ft_strjoin(*line, fd_line->content);
+	ft_strncat(*line, *s, num);
+	fd_line->content = ft_strjoin(fd_line->content, *s + num);
+	free(*s);
+	free(s);
+	return (1);
 }
 
 int read_line(char **str, int fd)
@@ -60,12 +70,12 @@ int read_line(char **str, int fd)
 	return (num);
 }
 
-t_list *ft_fdnew(int fd)
+k_list *ft_fdnew(int fd)
 {
-	t_list *ptr;
+	k_list *ptr;
 
 	ptr = NULL;
-	ptr = (t_list *)malloc(sizeof(t_list));
+	ptr = (k_list *)malloc(sizeof(k_list));
 	if (ptr == NULL || fd < 0)
 		return (NULL);
 	ptr->content = ft_strnew(0);

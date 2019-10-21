@@ -6,7 +6,7 @@
 /*   By: qjosmyn <qjosmyn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 14:27:05 by qjosmyn           #+#    #+#             */
-/*   Updated: 2019/10/21 21:04:16 by qjosmyn          ###   ########.fr       */
+/*   Updated: 2019/10/22 00:36:15 by qjosmyn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,21 @@
 #include <sys/uio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "libft.h"
 
 #define BUFF_SIZE 1
 
-typedef struct		s_list
+typedef struct		k_list
 {
 	char			*content;
 	int				file;
-	struct s_list	*next;
-}					t_list;
+	struct k_list	*next;
+}					k_list;
 
 
 int					ft_intchr(char *str, char c);
 int					get_next_line(const int fd, char **line);
-t_list				*ft_fdnew(int fd);
+k_list				*ft_fdnew(int fd);
+int					gnl(int fd, t_list *fd_line, char **line);
+int					read_line(char **str, int fd);
 
 #endif
