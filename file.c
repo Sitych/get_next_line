@@ -71,9 +71,8 @@ int main(int argc, char **argv)
 {
 	argc = 1;
 	int fd = open(argv[1], O_RDONLY);
+	int fd2 = open(argv[2], O_RDONLY);
 	char *str;
-	k_list *ptr;
-	ptr = ft_fdnew(6);
 
 	// ft_putstr(ptr->content);
 	// ft_putchar('\n');
@@ -85,12 +84,46 @@ int main(int argc, char **argv)
 	// 	ft_putnbr(l);
 	// 	ft_putstr(str);
 	// 	free(str);
-	if (get_next_line(fd, &str) != - 1)
+	printf("");
+	int i = 0;
+	while (get_next_line(fd, &str) == 1)
 	{
 		printf("%s", str);
-		//free(str);
+		free(str);
+		i++;
 	}
-
+	// if (get_next_line(fd, str) != - 1)
+	// {
+	// 	printf("\n !!!!!!!!!!!!!!!get next line!!!!!!!!!!!! %s \n", *str);
+	// 	//free(str);
+	// }
+	// if (get_next_line(fd, str) != - 1)
+	// {
+	// 	printf("\n !!!!!!!!!!!!!!!get next line!!!!!!!!!!!! %s \n", *str);
+	// 	//free(str);
+	// }
+	// if (get_next_line(fd2, str) != - 1)
+	// {
+	// 	printf("%s", *str);
+	// 	//free(str);
+	// }
+	// if (get_next_line(fd, str) != - 1)
+	// {
+	// 	printf("%s", *str);
+	// 	//free(str);
+	// }
+	// if (get_next_line(fd, str) != - 1)
+	// {
+	// 	printf("%s", *str);
+	// 	//free(str);
+	// }
+	// if (get_next_line(fd2, str) != - 1)
+	// {
+	// 	printf("%s", *str);
+	// 	//free(str);
+	// }
+	close(fd);
+	close(fd2);
 }
 
 	// char	*num;

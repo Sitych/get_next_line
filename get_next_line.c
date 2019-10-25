@@ -6,7 +6,7 @@
 /*   By: qjosmyn <qjosmyn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 14:23:54 by qjosmyn           #+#    #+#             */
-/*   Updated: 2019/10/25 00:11:12 by qjosmyn          ###   ########.fr       */
+/*   Updated: 2019/10/25 16:37:20 by qjosmyn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,58 +16,64 @@
 
 int		get_next_line(const int fd, char **line)
 {
-	static k_list *lines;
+	static	k_list *ptr;
+	char	*str;
 
-	lines = ft_fdnew(fd);
-	line = (char**)malloc(sizeof(char *));
+	str = ft_strnew(0);
 	if (fd < 0 || line == NULL)
 		return (-1);
-	gnl(fd, lines, line);
-	ft_putstr(*line);
-	return (1);
+	return (gnl(fd, &ptr, line, str));
 }
 
-int		gnl(int fd, k_list *fd_line, char **line)
+int		gnl(int fd, k_list **fd_line, char **line, char *str)
 {
 	int		num;
-	char	*str;
-	fd = 1;
-	str = ft_strnew(0);
-	// if (fd_line == NULL)
-	// {
-	// 	if ((fd_line = ft_fdnew(fd)) == NULL)
-	// 		return (-1);
-	// }
-	// else if (fd_line->file != fd)
-	// 	gnl(fd, fd_line->next, line);
-	if (read_line(&str, fd_line->file) == 0)
-		return (-1);
+	int		rtn;
+
+	if (*fd_line == NULL)
+	{
+		if ((*fd_line = ft_fdnew(fd)) == NULL)
+			return (-1);
+	}
+	else if ((*fd_line)->file != fd)
+	{
+		rtn = gnl(fd, &((*fd_line)->next), line, str);
+		return (rtn);
+	}
+	rtn = read_line(&str, fd_line, 0);
 	num = ft_intchr(str, '\n');
-	fd_line->content = ft_strdup(str + num + 1);
-	*(str + num) = '\0';
+	free((*fd_line)->content);
+	(*fd_line)->content = (num == -1) ? ft_strnew(0) : ft_strdup(str + num + 1);
+	if (num == -1)
+		*(str + num) = '\0';
 	*line = ft_strdup(str);
-	free(str);
-	//ft_putstr(*line);
-	return (1);
+	ft_strdel(&str);
+	return (rtn);	
 }
 
-int		read_line(char **str, int fd)
+int		read_line(char **str, k_list **ptr_list, int flag)
 {
 	int		end_line;
 	char	str_read[BUFF_SIZE + 1];
 	char	*tmp;
+	int		num;
 
-	while ((end_line = read(fd, str_read, BUFF_SIZE)) > 0)
+	while ((end_line = read((*ptr_list)->file, str_read, BUFF_SIZE)) > 0)
 	{
 		str_read[end_line] = '\0';
 		tmp = ft_strjoin(*str, str_read);
 		free(*str);
 		*str = tmp;
-		//ft_putstr(*str);
-		if (ft_intchr(*str, '\n') != -1)
-			return (1);
+		if ((num = ft_intchr(*str, '\n')) != -1)
+		{
+			flag = 1;
+			break;
+		}
 	}
-	return (0);
+	tmp = ft_strjoin((*ptr_list)->content, *str);
+	ft_strdel(str);
+	*str = tmp;
+	return (flag);
 }
 
 k_list	*ft_fdnew(int fd)
