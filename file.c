@@ -5,7 +5,7 @@
 // #include <stdlib.h>
 // # include <fcntl.h>
 // #include "libft.h"
-// #include <stdio.h>
+ #include <stdio.h>
 
 #include "get_next_line.c"
 
@@ -84,24 +84,20 @@ int main(int argc, char **argv)
 	// 	ft_putnbr(l);
 	// 	ft_putstr(str);
 	// 	free(str);
-	printf("");
-	int i = 0;
-	while (get_next_line(fd, &str) == 1)
+
+	// while ((i = get_next_line(fd, &str)) == 1)
+	// {
+	// 	printf("%s\n%d", str, i);
+	// 	free(str);
+	// }
+	// printf("%d", i);
+	int num = 1;
+	while (num != 0 && num != -1)
 	{
+		num = get_next_line(fd, &str);
 		printf("%s", str);
 		free(str);
-		i++;
 	}
-	// if (get_next_line(fd, str) != - 1)
-	// {
-	// 	printf("\n !!!!!!!!!!!!!!!get next line!!!!!!!!!!!! %s \n", *str);
-	// 	//free(str);
-	// }
-	// if (get_next_line(fd, str) != - 1)
-	// {
-	// 	printf("\n !!!!!!!!!!!!!!!get next line!!!!!!!!!!!! %s \n", *str);
-	// 	//free(str);
-	// }
 	// if (get_next_line(fd2, str) != - 1)
 	// {
 	// 	printf("%s", *str);
