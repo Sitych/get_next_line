@@ -6,7 +6,7 @@
 /*   By: qjosmyn <qjosmyn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 14:27:05 by qjosmyn           #+#    #+#             */
-/*   Updated: 2019/10/27 20:44:04 by qjosmyn          ###   ########.fr       */
+/*   Updated: 2019/10/29 22:19:54 by qjosmyn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ int						get_next_line(const int fd, char **line);
 t_my_list				*ft_fdnew(int fd);
 int						gnl(int fd, t_my_list **fd_line,
 							char **line, char *str);
-int						read_line(char **str, t_my_list **ptr_list, int flag, int num);
+int						read_line(char **str, t_my_list **ptr_list, int num);
 
 #endif
