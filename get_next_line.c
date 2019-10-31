@@ -6,7 +6,7 @@
 /*   By: qjosmyn <qjosmyn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 14:23:54 by qjosmyn           #+#    #+#             */
-/*   Updated: 2019/10/29 23:10:14 by qjosmyn          ###   ########.fr       */
+/*   Updated: 2019/11/01 00:43:06 by qjosmyn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int			get_next_line(const int fd, char **line)
 	char				*str;
 
 	str = ft_strnew(1);
-	if (fd  < 0 || line == NULL || str == NULL)
+	if (fd < 0 || line == NULL || str == NULL)
 		return (-1);
 	return (gnl(fd, &ptr, line, str));
 }
@@ -58,6 +58,7 @@ int			read_line(char **str, t_my_list **ptr_list, int num)
 	int		end_line;
 	char	str_read[BUFF_SIZE + 1];
 	char	*tmp;
+	char	*del;
 
 	while ((end_line = read((*ptr_list)->file, str_read, BUFF_SIZE)) > 0)
 	{
@@ -69,15 +70,15 @@ int			read_line(char **str, t_my_list **ptr_list, int num)
 		if ((num = ft_intchr(*str, '\n')) != -1)
 			break ;
 	}
-	if ((tmp = ft_strjoin((*ptr_list)->content, *str)) == NULL)
+	if ((del = ft_strjoin((*ptr_list)->content, *str)) == NULL)
 		return (-1);
-	// ft_strdel(str);
-	*str = tmp;
-	// printf(" line from read_line %s len %zu \n", tmp, ft_strlen(tmp));
-	if (end_line == 0  && ft_strlen(tmp) == 0)
+	ft_strdel(str);
+	*str = ft_strdup(del);
+	free(del);
+	if (end_line == 0 && ft_strlen(*str) == 0)
 		return (0);
 	if (end_line == -1)
-		return (-1);	
+		return (-1);
 	return (1);
 }
 
